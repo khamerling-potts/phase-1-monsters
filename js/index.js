@@ -1,9 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
   //Initial load of monsters in DOM
-  loadMonsters();
+  let offset = 1;
+  loadMonsters(offset);
 
-  function loadMonsters() {
-    fetch("http://localhost:3000/monsters?_limit=50")
+  function loadMonsters(offset) {
+    fetch(`http://localhost:3000/monsters?_limit=50&_page=${offset}`)
       .then((res) => res.json())
       .then((data) => data.forEach(displayMonster));
   }
@@ -44,4 +45,19 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((res) => res.json())
       .then((data) => displayMonster(data));
   }
+
+//load next 50 monsters and remove previous ones from screen
+document.getElementById('forward').addEventListener('click', event =>{
+  document.getElementById('monster-container').innerHTML = '';
+  offset++;
+  loadMonsters(offset);
+});
+
+//load previous 50 monsters and remove previous ones from screen
+document.getElementById('back').addEventListener('click', event =>{
+  document.getElementById('monster-container').innerHTML = '';
+  offset--;
+  loadMonsters(offset);
+});
+
 });
